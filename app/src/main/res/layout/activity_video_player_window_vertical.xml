@@ -8,10 +8,17 @@
     <include
         android:id="@+id/AppBar"
         layout="@layout/toolbar_orientation"/>
-    <VideoView
+    <SurfaceView
         android:id="@+id/Screen"
         android:layout_below="@id/AppBar"
+        android:layout_above="@id/Controls"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <include
+        android:id="@+id/Controls"
+        android:layout_alignParentBottom="true"
+        layout="@layout/buttons"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
 </RelativeLayout>

@@ -15,8 +15,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.example.project.Adapter.RecyclerAdapter;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView AppBarText;
     private RecyclerAdapter Adapter;
     private RecyclerView gridView;
+    private ImageButton User;
     ArrayList<File> Final = new ArrayList<File>();
 
 
@@ -70,6 +74,35 @@ public class MainActivity extends AppCompatActivity {
         BackButton = findViewById(R.id.BackButton);
         QrButton = findViewById(R.id.QRScanButton);
         AppBarText = findViewById(R.id.AppBarText);
+        User = findViewById(R.id.user);                                                                                                                                                            final PopupMenu dropDownMenu = new PopupMenu(getApplicationContext(), User);
+
+        final Menu menu = dropDownMenu.getMenu();
+        menu.add(0, 0, 0, "Login");
+        menu.add(0, 1, 0, "History");
+
+        dropDownMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case 0:
+                        Intent iLogin = new Intent(getApplicationContext(),Login.class);
+                        startActivity(iLogin);
+                        return true;
+                    case 1:
+                        Intent iHistory = new Intent(getApplicationContext(),History.class);
+                        startActivity(iHistory);
+                        return true;
+                }
+                return false;
+            }
+        });
+
+        User.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dropDownMenu.show();
+            }
+        });
 
         BackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         File directory = Environment.getExternalStorageDirectory();
-        //LoadFiles(directory);
+        LoadFiles(directory);
     }
 
     @SuppressLint("NotifyDataSetChanged")

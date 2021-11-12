@@ -10,4 +10,7 @@
     <color name="AppBarText">#FF1F1F1F</color>
     <color name="AppBar">#FF8ce0ff</color>
     <color name="NotificationBar">#FF279DF2</color>
+    <color name="Buttons">#FF8ce0ff</color>
+    <color name="EdittextOutline">#FF8ce0ff</color>
+    <color name="Popup">#FF4d98c4</color>
 </resources>

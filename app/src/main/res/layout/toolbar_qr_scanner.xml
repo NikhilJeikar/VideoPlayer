@@ -29,7 +29,7 @@
             android:id="@+id/QRScanButton"
             android:layout_toLeftOf="@id/user"
             android:layout_margin="10dp"
-            android:background="@drawable/qr_scanner"/>
+            android:background="@drawable/ic_baseline_add_circle_outline_24"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

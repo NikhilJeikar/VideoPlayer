@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -16,16 +18,31 @@ public class Register extends AppCompatActivity {
     EditText fn,ln,mail,mobile,password,C_password;
     Button Reg;
     SQLiteDatabase db;
+    ImageButton BackButton;
+    TextView AppBarText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         fn = findViewById(R.id.firstName);
         ln = findViewById(R.id.lastName);
-        mail = findViewById(R.id.email);
+        mail = findViewById(R.id.Email);
         mobile = findViewById(R.id.PhoneNumber);
         password = findViewById(R.id.Password);
         C_password = findViewById(R.id.ConfirmPassword);
+
+        BackButton = findViewById(R.id.BackButton);
+        AppBarText = findViewById(R.id.AppBarText);
+
+        BackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        AppBarText.setText(R.string.app_name);
+
         db = openOrCreateDatabase("USERS_DB", Context.MODE_PRIVATE, null);
         db.execSQL("CREATE TABLE IF NOT EXISTS USERS(FirstName VARCHAR,LastName VARCHAR,Email VARCHAR,MobileNumber INTEGER,Password VARCHAR);");
         Reg = findViewById(R.id.Register);

@@ -36,16 +36,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ic_baseline_subtitles_24"
         android:layout_centerVertical="true"
-        android:layout_margin="10dp"
-        android:layout_toLeftOf="@id/AddSubtitle"
-        android:id="@+id/subtitle"/>
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_baseline_add_24"
-        android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="10dp"
-        android:id="@+id/AddSubtitle"/>
+        android:id="@+id/subtitle"
+        android:layout_margin="10dp"/>
 
 </RelativeLayout>

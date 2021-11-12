@@ -36,10 +36,9 @@ public class VideoPlayerWindow extends AppCompatActivity implements SurfaceHolde
     private MediaPlayer mp;
     private SurfaceView mPreview;
     private SurfaceHolder holder;
-    boolean pausing = false;
     String Src = "";
     String SubtitleSrc = "";
-    boolean IsSubtitle = false;
+    boolean IsSubtitle = true;
 
     private ImageButton Replay,Pause,Forward,Rewind,subtitle,add;
 
@@ -61,23 +60,21 @@ public class VideoPlayerWindow extends AppCompatActivity implements SurfaceHolde
         Forward = findViewById(R.id.forward);
         Rewind = findViewById(R.id.rewind);
         subtitle = findViewById(R.id.subtitle);
-        add = findViewById(R.id.AddSubtitle);
         BackButton = findViewById(R.id.BackButton);
 
         Pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(pausing)
+                if(!mp.isPlaying())
                 {
                     mp.start();
-                    Pause.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
+                    Pause.setBackgroundResource(R.drawable.ic_baseline_pause_24);
                 }
                 else
                 {
-                    mp.stop();
-                    Pause.setBackgroundResource(R.drawable.ic_baseline_pause_24);
+                    mp.pause();
+                    Pause.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
                 }
-                pausing = !pausing;
             }
         });
 
@@ -91,7 +88,7 @@ public class VideoPlayerWindow extends AppCompatActivity implements SurfaceHolde
         Forward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int duration = mp.getCurrentPosition() + 1000;
+                int duration = mp.getCurrentPosition() + 10000;
                 if(mp.getDuration() < duration)
                 {
                     duration = mp.getDuration();
@@ -103,7 +100,7 @@ public class VideoPlayerWindow extends AppCompatActivity implements SurfaceHolde
         Rewind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int duration = mp.getCurrentPosition() - 1000;
+                int duration = mp.getCurrentPosition() - 10000;
                 if(0 > duration)
                 {
                     duration = 0;
@@ -119,30 +116,18 @@ public class VideoPlayerWindow extends AppCompatActivity implements SurfaceHolde
             }
         });
 
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         subtitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(IsSubtitle)
                 {
-                    try {
-                        mp.addTimedTextSource(SubtitleSrc,MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+                    chooseFile.setType("*/*");
+                    chooseFile = Intent.createChooser(chooseFile, "Choose a file");
+                    startActivityForResult(chooseFile, 100);
 
                 }
-                else
-                {
-                    mp.deselectTrack(0);
-                }
-
             }
         });
 
@@ -155,11 +140,20 @@ public class VideoPlayerWindow extends AppCompatActivity implements SurfaceHolde
 
         getWindow().setFormat(PixelFormat.UNKNOWN);
         mPreview = (SurfaceView)findViewById(R.id.Screen);
-        holder = mPreview.getHolder();
-        holder.setFixedSize(800, 480);
-        holder.addCallback(this);
-        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         mp = new MediaPlayer();
+//        mp.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
+        try {
+            mp.setDataSource(this,Uri.parse(Src));
+            holder = mPreview.getHolder();
+            holder.addCallback(this);
+            holder.setKeepScreenOn(true);
+            holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+            mp.prepare();
+
+        } catch (IllegalArgumentException | IllegalStateException | IOException e) {
+            e.printStackTrace();
+        }
+        mp.start();
     }
 
     protected void onPause(){
@@ -170,12 +164,17 @@ public class VideoPlayerWindow extends AppCompatActivity implements SurfaceHolde
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        SubtitleSrc = data.getData().getPath();
+        try {
+            mp.addTimedTextSource(SubtitleSrc,MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         mp.setDisplay(holder);
-        play();
     }
 
     @Override
@@ -188,13 +187,6 @@ public class VideoPlayerWindow extends AppCompatActivity implements SurfaceHolde
 
     }
 
-    void play(){
-        try {
-            mp.setDataSource(Src);
-            mp.prepare();
-        } catch (IllegalArgumentException | IllegalStateException | IOException e) {
-            e.printStackTrace();
-        }
-        mp.start();
-    }
+
+
 }

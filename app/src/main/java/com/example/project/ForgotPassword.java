@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -17,6 +19,8 @@ public class ForgotPassword extends AppCompatActivity {
     EditText mail,new_password;
     Button update;
     SQLiteDatabase db;
+    ImageButton BackButton;
+    TextView AppBarText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +28,17 @@ public class ForgotPassword extends AppCompatActivity {
         update = findViewById(R.id.update);
         mail = findViewById(R.id.email);
         new_password = findViewById(R.id.NPassword);
+
+        BackButton = findViewById(R.id.BackButton);
+        AppBarText = findViewById(R.id.AppBarText);
+
+        BackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         db = openOrCreateDatabase("USERS_DB", Context.MODE_PRIVATE, null);
         update.setOnClickListener(new View.OnClickListener() {
             @Override

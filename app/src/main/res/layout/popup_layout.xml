@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/Layout"
+    android:background="@drawable/shapeemail"
+    android:backgroundTint="#CCFFFFFF"
+    android:padding="30dp">
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:hint="Link"
+        android:id="@+id/Link"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View"
+        android:layout_below="@id/Link"
+        android:id="@+id/Play"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/buttonbg"
+        android:layout_margin="10dp"/>
+</RelativeLayout>

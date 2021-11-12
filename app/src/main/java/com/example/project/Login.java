@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,9 @@ public class Login extends AppCompatActivity {
     EditText mail,password;
     SQLiteDatabase db;
     CheckBox cb;
+    ImageButton BackButton;
+    TextView AppBarText;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,19 @@ public class Login extends AppCompatActivity {
         mail = findViewById(R.id.email);
         cb = findViewById(R.id.rememberMe);
         password = findViewById(R.id.password);
+
+        BackButton = findViewById(R.id.BackButton);
+        AppBarText = findViewById(R.id.AppBarText);
+
+        BackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        AppBarText.setText(R.string.app_name);
+
         db = openOrCreateDatabase("USERS_DB", Context.MODE_PRIVATE, null);
         FP = findViewById(R.id.forgotPass);
         FP.setOnClickListener(new View.OnClickListener() {
@@ -51,17 +68,17 @@ public class Login extends AppCompatActivity {
                 startActivity(i1);
             }
         });
-        mail.setOnTouchListener(new View.OnTouchListener() {
+        mail.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View view) {
                 SharedPreferences sf=getSharedPreferences("Credentials", Context.MODE_PRIVATE);
                 String p=sf.getString("UserName","");
                 String q=sf.getString("Password","");
                 mail.setText(p);
                 password.setText(q);
-                return true;
             }
         });
+
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +96,7 @@ public class Login extends AppCompatActivity {
                 if (c.moveToFirst()) {
                     String mailID = c.getString(2);
                     String pass = c.getString(4);
-                    if((mail.getText().toString().equals(mailID)==false) || (password.getText().toString().equals(pass)==false)){
+                    if((!mail.getText().toString().equals(mailID)) || (!password.getText().toString().equals(pass))){
                         showMessage("Error", "Invalid Credentials");
                     }
                     else if(mail.getText().toString().equals(mailID) && password.getText().toString().equals(pass)){
@@ -90,6 +107,10 @@ public class Login extends AppCompatActivity {
                             edit.putString("Password",password.getText().toString());
                             edit.commit();
                         }
+                        SharedPreferences sfLogin=getSharedPreferences("LoginState", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor et=sfLogin.edit();
+                        et.putString("LoginState","1");
+                        et.commit();
                         Intent i=new Intent(getApplicationContext(),MainActivity.class);
                         startActivity(i);
                     }

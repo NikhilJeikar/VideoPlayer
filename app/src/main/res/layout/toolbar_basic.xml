@@ -21,13 +21,5 @@
             android:layout_marginLeft="15dp"
             android:textColor="@color/AppBarText"
             android:text="App"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/user"
-            android:background="@drawable/profile"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="10dp"/>
     </RelativeLayout>
 </androidx.appcompat.widget.Toolbar>

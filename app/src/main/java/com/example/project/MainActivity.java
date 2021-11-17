@@ -83,27 +83,6 @@ public class MainActivity extends AppCompatActivity {
         AppBarText = findViewById(R.id.AppBarText);
         User = findViewById(R.id.user);                                                                                                                                                            final PopupMenu dropDownMenu = new PopupMenu(getApplicationContext(), User);
 
-        final Menu menu = dropDownMenu.getMenu();
-        menu.add(0, 0, 0, "Login");
-        menu.add(0, 1, 0, "History");
-
-        dropDownMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case 0:
-                        Intent iLogin = new Intent(getApplicationContext(),Login.class);
-                        startActivity(iLogin);
-                        return true;
-                    case 1:
-                        Intent iHistory = new Intent(getApplicationContext(),History.class);
-                        startActivity(iHistory);
-                        return true;
-                }
-                return false;
-            }
-        });
-
         User.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                             switch (item.getItemId()) {
                                 case 1:
                                     Intent iHistory = new Intent(getApplicationContext(),History.class);
+                                    iHistory.putExtra("mailid",mailId);
                                     startActivity(iHistory);
                                     return true;
                                 case 2:
@@ -167,6 +147,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getApplicationContext(),VideoPlayerWindow.class);
+                        SharedPreferences sfLogin=getSharedPreferences("LoginState", Context.MODE_PRIVATE);
+                        String st = sfLogin.getString("LoginState","");
+                        if(st.equals("1")) {
+                            SharedPreferences sf=getSharedPreferences("Credentials", Context.MODE_PRIVATE);
+                            String mailId = sf.getString("UserName","");
+                            intent.putExtra("UserName", mailId);
+                        }
                         intent.putExtra("Path",popet.getText().toString().trim());
                         startActivity(intent);
                     }

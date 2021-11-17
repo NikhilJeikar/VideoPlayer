@@ -2,6 +2,7 @@ package com.example.project.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -80,6 +81,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
             Intent intent = new Intent(context, VideoPlayerWindow.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("Path",Array.get(holder.getAdapterPosition()).file.getPath());
+            SharedPreferences sfLogin=context.getSharedPreferences("LoginState", Context.MODE_PRIVATE);
+            String st = sfLogin.getString("LoginState","");
+            if(st.equals("1")) {
+                SharedPreferences sf=context.getSharedPreferences("Credentials", Context.MODE_PRIVATE);
+                String mailId = sf.getString("UserName","");
+                intent.putExtra("UserName", mailId);
+            }
             context.startActivity(intent);
         }
     });

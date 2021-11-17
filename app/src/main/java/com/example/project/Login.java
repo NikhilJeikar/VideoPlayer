@@ -112,7 +112,9 @@ public class Login extends AppCompatActivity {
                         et.putString("LoginState","1");
                         et.commit();
                         Intent i=new Intent(getApplicationContext(),MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);
+                        finish();
                     }
                 }
                 else {

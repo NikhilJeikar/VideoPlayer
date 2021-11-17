@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.PixelFormat;
 import android.media.AudioFocusRequest;
 import android.media.MediaFormat;
@@ -33,11 +34,13 @@ import java.util.ArrayList;
 
 public class VideoPlayerWindow extends AppCompatActivity implements SurfaceHolder.Callback{
     ImageButton BackButton;
+    SQLiteDatabase db;
     private MediaPlayer mp;
     private SurfaceView mPreview;
     private SurfaceHolder holder;
     String Src = "";
     String SubtitleSrc = "";
+    String id = "";
     boolean IsSubtitle = true;
 
     private ImageButton Replay,Pause,Forward,Rewind,subtitle,add;
@@ -49,11 +52,11 @@ public class VideoPlayerWindow extends AppCompatActivity implements SurfaceHolde
 
         Src = getIntent().getStringExtra("Path");
 
-        SharedPreferences sf=getSharedPreferences("History", Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit=sf.edit();
-        String h=sf.getString("yourHistory","");
-        edit.putString("yourHistory",Src+"," + h);
-        edit.apply();
+        db = openOrCreateDatabase("USERS_DB", Context.MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS USERHISTORY(Email VARCHAR,history VARCHAR);");
+        Src = getIntent().getStringExtra("Path");
+        id = getIntent().getStringExtra("UserName");
+        db.execSQL("INSERT INTO USERHISTORY VALUES('" + id + "','" +  Src + "');");
 
         Replay = findViewById(R.id.replay);
         Pause = findViewById(R.id.PR);
